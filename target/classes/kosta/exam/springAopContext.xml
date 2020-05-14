@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+	<bean class="kosta.exam.MessageServiceImpl" id="service"/>
+	<bean class="kosta.exam.UserService" id="userService"/>
+	<bean class="kosta.exam.TimerAdvice" id="advice"/>
+	
+	<!-- aop 설정하기
+		proxy-target-class="true" 옵션
+		: proxyServer를 생성하는 방법
+			1) J2SE방식: target 대상 클래스가 interface가 있다면 반드시 interface를 통해 호출될 수 있도록 한다.
+			
+			2) CGLIB방식: interface 상관 없이 구현체로 호출 가능하도록 설정
+			
+		expose-proxy="true" 옵션
+		: AopContext를 사용하기 위한 설정
+	 -->
+	<aop:config proxy-target-class="false" expose-proxy="true">
+		<aop:aspect id="aspect" ref="advice">
+			<aop:around method="around" pointcut="execution(public * kosta.exam.*Service*.*Hello(..))"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
